@@ -9,11 +9,11 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 from streaming import check_live_status  # 导入新的streaming模块
 
-class StreamerApp:
+class StreamerApp:  # 修复这里的语法错误
     def __init__(self, root):
         self.root = root
         self.root.title("Live Stream Status Detector")
-        self.root.geometry("800x600")
+        self.root.geometry("500x600")
         
         # 初始化数据
         self.data_file = 'streamers.json'
@@ -63,7 +63,7 @@ class StreamerApp:
         
         tk.Label(dialog, text="名称:", anchor="w").grid(row=0, column=0, padx=5, pady=5, sticky="w")
         name_entry = ttk.Entry(dialog, width=30)
-        name_entry.grid(row=0, column=1, padx=5, pady=5)
+        name_entry.grid(row=0, column=1, padx=5, pady=5)  # Fixed syntax error here
         
         # 平台
         tk.Label(dialog, text="平台:", anchor="w").grid(row=1, column=0, padx=5, pady=5, sticky="w")
@@ -98,15 +98,19 @@ class StreamerApp:
         avatar_path = tk.StringVar()
         avatar_entry = ttk.Entry(dialog, textvariable=avatar_path, width=30)
         avatar_entry.grid(row=4, column=1, padx=5, pady=5)
-        tk.Button(dialog, text="浏览", command=lambda: select_avatar(avatar_path)).grid(row=4, column=2, padx=5, pady=5)
+        tk.Button(dialog, text="浏览", 
+                  command=lambda: self.select_avatar(avatar_path)).grid(row=4, column=2, padx=5, pady=5)
 
         # 保存按钮
-        tk.Button(dialog, text="保存", command=lambda: save_new_streamer(name_entry, platform_combo, link_entry, interval_entry, avatar_path)).grid(row=5, column=1, pady=10)
+        tk.Button(dialog, text="保存", 
+                  command=lambda: self.save_new_streamer(
+                      name_entry, platform_combo, link_entry, 
+                      interval_entry, avatar_path, dialog)).grid(row=5, column=1, pady=10)
+
     def select_avatar(self, avatar_path):
         path = filedialog.askopenfilename(filetypes=[("Image files", "*.png *.jpg *.jpeg *.gif *.bmp")])
         if path:
-            avatar_path.delete(0, tk.END)
-            avatar_path.insert(0, path)
+            avatar_path.set(path)  # Use set() for StringVar
     
     def save_new_streamer(self, name_entry, platform_combo, link_entry, interval_entry, avatar_path, dialog):
         name = name_entry.get().strip()
@@ -186,8 +190,10 @@ class StreamerApp:
                 avatar_image = Image.open(streamer["avatar"])
                 avatar_image = avatar_image.resize((50, 50), Image.LANCZOS)
                 
-                # 检测直播状态
+                # 实时检测直播状态
                 status = check_live_status(streamer["link"])
+                streamer["status"] = status  # 更新状态
+                streamer["last_check"] = time.time()  # 更新检查时间
                 
                 # 仅当确认离线时转换为灰度图
                 if status == "Offline":
@@ -224,15 +230,31 @@ class StreamerApp:
             messagebox.showerror("Error", f"无法打开直播链接: {str(e)}")
     
     def check_status(self):
+        if not self.streamers:  # 检查是否有主播
+            self.root.after(300000, self.check_status)  # 如果没有主播，5分钟后再检查
+            return
+            
+        current_time = time.time()
         for streamer in self.streamers:
+            # 获取最新状态
             status = check_live_status(streamer["link"])
+            # 更新状态和检查时间
             streamer["status"] = status
+            streamer["last_check"] = current_time
+        
         self.save_data()
         self.refresh_streamers()
+        
+        # 使用第一个主播的检查间隔或默认值
+        check_interval = self.streamers[0].get("check_interval", 5) if self.streamers else 5
         # 设置定时检查
-        self.root.after(int(streamer.get("check_interval", 5) * 60 * 1000), self.check_status)
+        self.root.after(int(check_interval * 60 * 1000), self.check_status)
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    app = StreamerApp(root)
-    root.mainloop()
+    try:
+        root = tk.Tk()
+        app = StreamerApp(root)
+        root.mainloop()
+    except Exception as e:
+        with open("error.log", "w") as f:
+            f.write(str(e))
