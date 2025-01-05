@@ -5,6 +5,7 @@ Live Record 是一个用于检测直播状态的应用程序。它可以检测�
 ## 项目简介
 
 该项目最初是一个基于 Tkinter 的桌面应用程序，现在已转换为 Flask Web 应用程序。它可以检测直播状态，并通过 API 提供给其他应用程序使用。
+<<<<<<< HEAD
 
 ## 安装步骤
 
@@ -53,3 +54,5 @@ curl -X POST http://localhost:5000/streamers -H "Content-Type: application/json"
     "check_interval": 5
 }'
 ```
+=======
+>>>>>>> abfad11d32c5c91b8621bd0e64b5a1b3a5035cbf
