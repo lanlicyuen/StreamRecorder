@@ -6,6 +6,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import time
 import json
+from streaming import check_live_status
 
 def find_stream_link(url):
     # 设置Chrome选项
@@ -42,9 +43,6 @@ def find_stream_link(url):
     return None
 
 if __name__ == "__main__":
-    url = "https://play.sooplive.co.kr/rud9281"
-    stream_link = find_stream_link(url)
-    if stream_link:
-        print(f"Found stream link: {stream_link}")
-    else:
-        print("No stream link found")
+    url = "https://live.douyin.com/980254586490"
+    status = check_live_status(url)
+    print(f"Live status: {status}")
