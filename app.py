@@ -68,6 +68,11 @@ class StreamerApp:
         menubar.add_cascade(label="记录", menu=record_menu)
         record_menu.add_command(label="查看历史记录", command=self.show_records)
 
+        # 格式转换菜单
+        convert_menu = tk.Menu(menubar, tearoff=0)
+        menubar.add_cascade(label="格式转换", menu=convert_menu)
+        convert_menu.add_command(label="打开转换窗口", command=self.show_converter)
+
         tk.Label(self.root, text="推流链接:").pack(pady=5)
         self.link_var = tk.StringVar()
         self.link_combo = ttk.Combobox(self.root, textvariable=self.link_var, width=45)
@@ -191,10 +196,66 @@ class StreamerApp:
 
         tree.bind("<Button-3>", do_popup)
 
+    def show_converter(self):
+        conv_dialog = tk.Toplevel(self.root)
+        conv_dialog.title("格式转换")
+        conv_dialog.geometry("400x180")
+
+        # 选择输入文件
+        tk.Label(conv_dialog, text="输入文件(TS/FLV):").pack(pady=5)
+        in_var = tk.StringVar()
+        in_frame = ttk.Frame(conv_dialog)
+        in_frame.pack(pady=0)
+        in_entry = ttk.Entry(in_frame, textvariable=in_var, width=35)
+        in_entry.pack(side=tk.LEFT, padx=5)
+
+        def select_input():
+            path = filedialog.askopenfilename(filetypes=[("Video", "*.ts *.flv")])
+            if path:
+                in_var.set(path)
+                # 如果输出文件为空,则自动使用输入文件同路径、同名的 .mp4
+                if not out_var.get().strip():
+                    base, _ = os.path.splitext(path)
+                    out_var.set(base + ".mp4")
+        ttk.Button(in_frame, text="浏览", command=select_input).pack(side=tk.LEFT)
+
+        # 选择输出文件
+        tk.Label(conv_dialog, text="输出文件(MP4):").pack(pady=5)
+        out_var = tk.StringVar()
+        out_frame = ttk.Frame(conv_dialog)
+        out_frame.pack(pady=0)
+        out_entry = ttk.Entry(out_frame, textvariable=out_var, width=35)
+        out_entry.pack(side=tk.LEFT, padx=5)
+
+        def select_output():
+            path = filedialog.asksaveasfilename(
+                defaultextension=".mp4",
+                filetypes=[("MP4 files", "*.mp4")],
+            )
+            if path:
+                out_var.set(path)
+        ttk.Button(out_frame, text="浏览", command=select_output).pack(side=tk.LEFT)
+
+        def convert():
+            in_file = in_var.get().strip()
+            out_file = out_var.get().strip()
+            if not os.path.exists(in_file):
+                messagebox.showerror("错误", "请选择有效的输入文件")
+                return
+            if not out_file:
+                messagebox.showerror("错误", "请选择输出文件")
+                return
+
+            cmd = f'ffmpeg -i "{in_file}" -c copy "{out_file}"'
+            subprocess.Popen(f'start cmd /c {cmd}', shell=True)
+            conv_dialog.destroy()
+
+        ttk.Button(conv_dialog, text="开始转换", command=convert).pack(pady=10)
+
     def show_about(self):
         about_dialog = tk.Toplevel(self.root)
         about_dialog.title("关于作者")
-        about_dialog.geometry("300x300")
+        about_dialog.geometry("300x200")
 
         info_frame = ttk.Frame(about_dialog)
         info_frame.pack(expand=True, fill='both', padx=20, pady=20)
@@ -202,7 +263,7 @@ class StreamerApp:
         ttk.Label(info_frame, text="作者: Lanlic Yuen", font=('Arial', 10)).pack(pady=5)
         ttk.Label(info_frame, text="个人研究开发", font=('Arial', 10)).pack(pady=5)
         ttk.Label(info_frame, text="联系方式: lanlic@hotmail.com", font=('Arial', 10)).pack(pady=5)
-        ttk.Label(info_frame, text="版本: v1.1", font=('Arial', 10)).pack(pady=5)
+        ttk.Label(info_frame, text="版本: v1.2", font=('Arial', 10)).pack(pady=5)
 
         ttk.Button(about_dialog, text="关闭", command=about_dialog.destroy).pack(pady=10)
 

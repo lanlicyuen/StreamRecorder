@@ -1,5 +1,75 @@
 {
   "last_record_dir": "D:/Live-AF",
-  "recent_links": [],
-  "past_records": []
+  "recent_links": [
+    "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+    "https://live-global-cdn-v02.sooplive.co.kr/live-stm-10/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.ZdSEb0fZeR6ATaeuczIlxrnvXlOstp2Dt-txEsO3ZPnkAjezFzDnsVa7GGENhRB1IThI3tFFbzq0Nq9neLl_2-E9VgkS74cHq6R8PYRYiARqGbo6pBlGV-MRGettrA0l"
+  ],
+  "past_records": [
+    {
+      "time": "2025_01_21_14_31_53",
+      "file": "D:/Live-AF\\2025_01_21_14_31_53_88output.ts",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-10/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.ZdSEb0fZeR6ATaeuczIlxrnvXlOstp2Dt-txEsO3ZPnkAjezFzDnsVa7GGENhRB1IThI3tFFbzq0Nq9neLl_2-E9VgkS74cHq6R8PYRYiARqGbo6pBlGV-MRGettrA0l",
+      "suffix": "ts"
+    },
+    {
+      "time": "2025_01_22_22_01_19",
+      "file": "D:/Live-AF\\2025_01_22_22_01_19_88output.ts",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+      "suffix": "ts"
+    },
+    {
+      "time": "2025_01_22_22_20_10",
+      "file": "D:/Live-AF\\2025_01_22_22_20_10_88output.mp4",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+      "suffix": "mp4"
+    },
+    {
+      "time": "2025_01_22_22_21_03",
+      "file": "D:/Live-AF\\2025_01_22_22_21_03_88output.mp4",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+      "suffix": "mp4"
+    },
+    {
+      "time": "2025_01_22_22_24_31",
+      "file": "D:/Live-AF\\2025_01_22_22_24_31_88output.mp4",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+      "suffix": "mp4"
+    },
+    {
+      "time": "2025_01_22_22_26_19",
+      "file": "D:/Live-AF\\2025_01_22_22_26_19_88output.mp4",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+      "suffix": "mp4"
+    },
+    {
+      "time": "2025_01_22_22_33_13",
+      "file": "D:/Live-AF\\2025_01_22_22_33_13_88output.mp4",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+      "suffix": "mp4"
+    },
+    {
+      "time": "2025_01_22_22_39_02",
+      "file": "D:/Live-AF\\2025_01_22_22_39_02_88output.ts",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+      "suffix": "ts"
+    },
+    {
+      "time": "2025_01_22_22_39_53",
+      "file": "D:/Live-AF\\2025_01_22_22_39_53_88output.ts",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+      "suffix": "ts"
+    },
+    {
+      "time": "2025_01_22_22_43_27",
+      "file": "D:/Live-AF\\2025_01_22_22_43_27_88output.ts",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+      "suffix": "ts"
+    },
+    {
+      "time": "2025_01_22_22_45_55",
+      "file": "D:/Live-AF\\2025_01_22_22_45_55_88output.ts",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-01/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uJUMzT3qW44mNDKDnr6brotXA0c9f0YIpVIchTQgWLTuJDsD4UBr3gXdst5CU8Q5QfdF8Ru5ZsqrvQiuFY17iqCfdNU6TTDj0URIOZ8a8DjbPccL9OYw9TWhWyNOg4b_",
+      "suffix": "ts"
+    }
+  ]
 }
