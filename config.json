@@ -34,5 +34,6 @@
       "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stm-06/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.SXOJodyBEvKZ6EUJTFQmBz4QcG68Tjwi29W7exbCJQfv2uCZasXexYnzII5lH-Dn8aB3YynI_yEflvf_icAHgywJ12hq_JaBW5s01DKYT0RZOHGEQHei_B1Q8O_Wq3E_",
       "suffix": "mp4"
     }
-  ]
+  ],
+  "ffmpeg_path": "D:\\FFmpeg\\bin\\ffmpeg.exe"
 }

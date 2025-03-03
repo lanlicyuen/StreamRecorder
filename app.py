@@ -24,11 +24,14 @@ class StreamerApp:
         self.config_file = 'config.json'
         self.config = self.load_config()
         
-        # 读取或初始化“recent_links”和“past_records”
+        # 读取或初始化"recent_links"和"past_records"
         if "recent_links" not in self.config:
             self.config["recent_links"] = []
         if "past_records" not in self.config:
             self.config["past_records"] = []
+        # 初始化ffmpeg路径配置
+        if "ffmpeg_path" not in self.config:
+            self.config["ffmpeg_path"] = r'D:\FFmpeg\bin\ffmpeg.exe'
 
         self.save_config()
         self.create_widgets()
@@ -61,6 +64,8 @@ class StreamerApp:
         # 关于我
         about_menu = tk.Menu(menubar, tearoff=0)
         menubar.add_cascade(label="关于我", menu=about_menu)
+        about_menu.add_command(label="设置", command=self.show_settings)
+        about_menu.add_command(label="使用说明书", command=self.show_manual)  # 添加使用说明书菜单项
         about_menu.add_command(label="关于作者", command=self.show_about)
 
         # 记录菜单
@@ -100,6 +105,38 @@ class StreamerApp:
         selected = filedialog.askdirectory()
         if selected:
             self.output_dir_var.set(selected)
+            
+    def show_settings(self):
+        settings_dialog = tk.Toplevel(self.root)
+        settings_dialog.title("设置")
+        settings_dialog.geometry("450x150")
+        
+        settings_frame = ttk.Frame(settings_dialog)
+        settings_frame.pack(expand=True, fill='both', padx=20, pady=20)
+        
+        # FFmpeg路径配置
+        ttk.Label(settings_frame, text="FFmpeg路径:").grid(row=0, column=0, sticky="w", pady=10)
+        ffmpeg_path_var = tk.StringVar(value=self.config.get("ffmpeg_path", ""))
+        ffmpeg_entry = ttk.Entry(settings_frame, textvariable=ffmpeg_path_var, width=35)
+        ffmpeg_entry.grid(row=0, column=1, padx=5)
+        
+        def browse_ffmpeg():
+            path = filedialog.askopenfilename(
+                title="选择FFmpeg可执行文件",
+                filetypes=[("Executable", "*.exe")]
+            )
+            if path:
+                ffmpeg_path_var.set(path)
+                
+        ttk.Button(settings_frame, text="浏览", command=browse_ffmpeg).grid(row=0, column=2, padx=5)
+        
+        def save_settings():
+            self.config["ffmpeg_path"] = ffmpeg_path_var.get()
+            self.save_config()
+            messagebox.showinfo("提示", "设置已保存")
+            settings_dialog.destroy()
+            
+        ttk.Button(settings_dialog, text="保存", command=save_settings).pack(pady=10)
 
     def start_record(self):
         link = self.link_var.get().strip()
@@ -126,11 +163,12 @@ class StreamerApp:
         output_name = f"{time_str}_88output.{suffix}"
         output_path = os.path.join(output_dir, output_name)
 
-        # mp4或ts
+        # 使用配置中的ffmpeg路径
+        ffmpeg_path = self.config.get("ffmpeg_path", r'D:\FFmpeg\bin\ffmpeg.exe')
         if suffix == "ts":
-            cmd = f'ffmpeg -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 -i "{link}" -c copy "{output_path}"'
+            cmd = f'{ffmpeg_path} -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 -i "{link}" -c copy "{output_path}"'
         else:
-            cmd = f'ffmpeg -i "{link}" -c copy -timeout 10000000 -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 "{output_path}"'
+            cmd = f'{ffmpeg_path} -i "{link}" -c copy -timeout 10000000 -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 "{output_path}"'
 
         # 使用 /c 使录制结束后关闭命令行
         subprocess.Popen(f'start cmd /c {cmd}', shell=True)
@@ -172,7 +210,7 @@ class StreamerApp:
                 file_path = item[1]
                 folder_path = os.path.dirname(file_path).replace('/', '\\')
                 if os.path.exists(folder_path):
-                    subprocess.Popen(["explorer", f"/select,{file_path.replace('/', '\\')}"])
+                    subprocess.Popen(['explorer', f'/select,"{file_path.replace("/", "\\")}"'])
 
         def clear_records():
             self.config["past_records"] = []
@@ -209,18 +247,29 @@ class StreamerApp:
         in_entry = ttk.Entry(in_frame, textvariable=in_var, width=35)
         in_entry.pack(side=tk.LEFT, padx=5)
 
+        # 存储多个文件路径
+        self.selected_files = []
+
         def select_input():
-            path = filedialog.askopenfilename(filetypes=[("Video", "*.ts *.flv")])
-            if path:
-                in_var.set(path)
-                # 如果输出文件为空,则自动使用输入文件同路径、同名的 .mp4
-                if not out_var.get().strip():
-                    base, _ = os.path.splitext(path)
-                    out_var.set(base + ".mp4")
+            paths = filedialog.askopenfilenames(filetypes=[("Video", "*.ts *.flv")])
+            if paths:
+                self.selected_files = list(paths)  # 转换为列表并保存
+                # 在输入框显示选择的文件数量
+                if len(self.selected_files) == 1:
+                    in_var.set(self.selected_files[0])
+                else:
+                    in_var.set(f"已选择 {len(self.selected_files)} 个文件")
+                
+                # 设置默认输出目录
+                if not out_var.get().strip() and len(self.selected_files) > 0:
+                    # 使用第一个文件的目录作为输出目录
+                    output_dir = os.path.dirname(self.selected_files[0])
+                    out_var.set(output_dir)
+                    
         ttk.Button(in_frame, text="浏览", command=select_input).pack(side=tk.LEFT)
 
-        # 选择输出文件
-        tk.Label(conv_dialog, text="输出文件(MP4):").pack(pady=5)
+        # 选择输出文件夹
+        tk.Label(conv_dialog, text="输出目录:").pack(pady=5)
         out_var = tk.StringVar()
         out_frame = ttk.Frame(conv_dialog)
         out_frame.pack(pady=0)
@@ -228,26 +277,35 @@ class StreamerApp:
         out_entry.pack(side=tk.LEFT, padx=5)
 
         def select_output():
-            path = filedialog.asksaveasfilename(
-                defaultextension=".mp4",
-                filetypes=[("MP4 files", "*.mp4")],
-            )
+            path = filedialog.askdirectory()
             if path:
                 out_var.set(path)
         ttk.Button(out_frame, text="浏览", command=select_output).pack(side=tk.LEFT)
 
         def convert():
-            in_file = in_var.get().strip()
-            out_file = out_var.get().strip()
-            if not os.path.exists(in_file):
-                messagebox.showerror("错误", "请选择有效的输入文件")
+            if not self.selected_files:
+                messagebox.showerror("错误", "请选择输入文件")
                 return
-            if not out_file:
-                messagebox.showerror("错误", "请选择输出文件")
+                
+            output_dir = out_var.get().strip()
+            if not output_dir or not os.path.isdir(output_dir):
+                messagebox.showerror("错误", "请选择有效的输出目录")
                 return
 
-            cmd = f'ffmpeg -i "{in_file}" -c copy "{out_file}"'
-            subprocess.Popen(f'start cmd /c {cmd}', shell=True)
+            # 使用配置中的ffmpeg路径
+            ffmpeg_path = self.config.get("ffmpeg_path", r'D:\FFmpeg\bin\ffmpeg.exe')
+            
+            for in_file in self.selected_files:
+                if os.path.exists(in_file):
+                    # 使用原文件名，但更改扩展名为.mp4
+                    base_name = os.path.basename(in_file)
+                    file_name_without_ext = os.path.splitext(base_name)[0]
+                    out_file = os.path.join(output_dir, f"{file_name_without_ext}.mp4")
+                    
+                    cmd = f'{ffmpeg_path} -i "{in_file}" -c copy "{out_file}"'
+                    subprocess.Popen(f'start cmd /c {cmd}', shell=True)
+            
+            messagebox.showinfo("提示", f"开始转换 {len(self.selected_files)} 个文件")
             conv_dialog.destroy()
 
         ttk.Button(conv_dialog, text="开始转换", command=convert).pack(pady=10)
@@ -263,9 +321,68 @@ class StreamerApp:
         ttk.Label(info_frame, text="作者: Lanlic Yuen", font=('Arial', 10)).pack(pady=5)
         ttk.Label(info_frame, text="个人研究开发", font=('Arial', 10)).pack(pady=5)
         ttk.Label(info_frame, text="联系方式: lanlic@hotmail.com", font=('Arial', 10)).pack(pady=5)
-        ttk.Label(info_frame, text="版本: v1.2", font=('Arial', 10)).pack(pady=5)
+        ttk.Label(info_frame, text="版本: v1.3", font=('Arial', 10)).pack(pady=5)
 
         ttk.Button(about_dialog, text="关闭", command=about_dialog.destroy).pack(pady=10)
+
+    def show_manual(self):
+        manual_dialog = tk.Toplevel(self.root)
+        manual_dialog.title("使用说明书")
+        manual_dialog.geometry("500x350")
+
+        manual_frame = ttk.Frame(manual_dialog)
+        manual_frame.pack(expand=True, fill='both', padx=20, pady=20)
+
+        # 创建一个带滚动条的文本框
+        text_area = tk.Text(manual_frame, wrap=tk.WORD, width=50, height=15, font=('Arial', 10))
+        scrollbar = ttk.Scrollbar(manual_frame, command=text_area.yview)
+        text_area.configure(yscrollcommand=scrollbar.set)
+        
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        text_area.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # 使用说明内容
+        manual_text = """使用说明书
+
+重要提示: 本软件需要配置 FFmpeg 才能正常使用！
+
+1. 基本设置
+   - 首次使用前，请点击菜单"关于我" -> "设置"配置FFmpeg路径
+   - 如果您尚未安装FFmpeg，请访问以下链接下载:
+     https://ffmpeg.org/download.html#build-windows
+
+2. 录制流媒体
+   - 在主界面输入有效的流媒体URL
+   - 选择保存格式(ts或mp4)
+   - 选择保存文件夹
+   - 点击"开始录制"按钮
+
+3. 查看历史记录
+   - 点击菜单"记录" -> "查看历史记录"
+   - 右键点击记录可以打开所在文件夹
+
+4. 格式转换
+   - 点击菜单"格式转换" -> "打开转换窗口"
+   - 可以选择多个文件进行批量转换
+   - 选择输出目录后点击"开始转换"
+
+如有任何问题，请联系开发者。
+"""
+        
+        # 插入文本并设置为只读
+        text_area.insert(tk.END, manual_text)
+        text_area.config(state=tk.DISABLED)  # 设置为只读
+
+        # 创建一个框架放置下载链接按钮
+        button_frame = ttk.Frame(manual_dialog)
+        button_frame.pack(pady=10)
+        
+        def open_download_link():
+            import webbrowser
+            webbrowser.open("https://ffmpeg.org/download.html#build-windows")
+            
+        ttk.Button(button_frame, text="打开FFmpeg下载页面", command=open_download_link).pack(side=tk.LEFT, padx=10)
+        ttk.Button(button_frame, text="关闭", command=manual_dialog.destroy).pack(side=tk.LEFT, padx=10)
 
 if __name__ == "__main__":
     try:
