@@ -19,6 +19,11 @@ class StreamerApp:
         self.root.title("Stream Recorder")
         self.root.geometry("500x350")
         
+        # 设置窗口图标
+        icon_path = "icon.ico"
+        if os.path.exists(icon_path):
+            self.root.iconbitmap(icon_path)
+        
         logging.info("Initializing StreamerApp...")
 
         self.config_file = 'config.json'
@@ -198,8 +203,10 @@ class StreamerApp:
         tree.column("link", width=120)
         tree.pack(fill=tk.BOTH, expand=True)
 
+        # 修改这里，确保文件路径使用正斜杠
         for rec in self.config.get("past_records", []):
-            tree.insert("", tk.END, values=(rec.get("time"), rec.get("file"), rec.get("link")))
+            file_path = rec.get("file", "").replace('\\', '/')
+            tree.insert("", tk.END, values=(rec.get("time"), file_path, rec.get("link")))
 
         menu = tk.Menu(tree, tearoff=0)
 
@@ -208,7 +215,7 @@ class StreamerApp:
             if sel:
                 item = tree.item(sel[0])["values"]
                 file_path = item[1]
-                folder_path = os.path.dirname(file_path).replace('/', '\\')
+                folder_path = os.path.dirname(file_path)
                 if os.path.exists(folder_path):
                     subprocess.Popen(['explorer', f'/select,"{file_path.replace("/", "\\")}"'])
 
@@ -321,7 +328,7 @@ class StreamerApp:
         ttk.Label(info_frame, text="作者: Lanlic Yuen", font=('Arial', 10)).pack(pady=5)
         ttk.Label(info_frame, text="个人研究开发", font=('Arial', 10)).pack(pady=5)
         ttk.Label(info_frame, text="联系方式: lanlic@hotmail.com", font=('Arial', 10)).pack(pady=5)
-        ttk.Label(info_frame, text="版本: v1.3", font=('Arial', 10)).pack(pady=5)
+        ttk.Label(info_frame, text="版本: v1.4", font=('Arial', 10)).pack(pady=5)
 
         ttk.Button(about_dialog, text="关闭", command=about_dialog.destroy).pack(pady=10)
 
