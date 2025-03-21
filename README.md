@@ -1,58 +1,88 @@
-# Live Record
+# Stream Recorder
 
-Live Record 是一个用于检测直播状态的应用程序。它可以检测多个平台的直播状态，并通过 API 提供给 Android 应用使用。
+一个功能强大的流媒体录制和格式转换工具。
 
-## 项目简介
+## 功能特点
 
-该项目最初是一个基于 Tkinter 的桌面应用程序，现在已转换为 Flask Web 应用程序。它可以检测直播状态，并通过 API 提供给其他应用程序使用。
-<<<<<<< HEAD
+- 录制流媒体内容（支持 TS 和 MP4 格式）
+- 历史记录管理和快速访问
+- 格式转换（支持批量转换）
+- 自定义 FFmpeg 配置
+- 简洁的用户界面
 
-## 安装步骤
+## 系统要求
 
-1. 克隆仓库到本地：
-    ```sh
-    git clone https://github.com/lanlicyuen/live_record.git
-    cd live_record
-    ```
+- Windows 操作系统
+- FFmpeg（需要单独下载安装）
 
-2. 创建并激活虚拟环境：
-    ```sh
-    python -m venv .venv
-    .venv\Scripts\activate  # Windows
-    source .venv/bin/activate  # macOS/Linux
-    ```
+## 安装说明
 
-3. 安装依赖：
-    ```sh
-    pip install -r requirements.txt
-    ```
+1. 下载最新版本的 StreamRecorder：
+   - 访问 [Releases](https://github.com/lanlicyuen/Live_Tools/releases) 页面
+   - 下载最新版本的 `StreamRecorder.exe`
 
-4. 运行 Flask 应用：
-    ```sh
-    python app.py
-    ```
+2. 安装 FFmpeg：
+   - 访问 [FFmpeg 官网](https://ffmpeg.org/download.html#build-windows)
+   - 下载并解压 FFmpeg
+   - 记住 FFmpeg 的安装路径
+
+3. 首次运行配置：
+   - 运行 StreamRecorder.exe
+   - 点击"关于我" -> "设置"
+   - 配置 FFmpeg 路径
 
 ## 使用说明
-API 说明
-GET /streamers
-获取所有主播信息。
 
-POST /streamers
-添加新的主播。
+### 录制流媒体
+1. 在主界面输入流媒体 URL
+2. 选择保存格式（TS 或 MP4）
+3. 选择保存文件夹
+4. 点击"开始录制"
 
-请求体示例：
+### 格式转换
+1. 点击菜单"格式转换" -> "打开转换窗口"
+2. 选择一个或多个输入文件
+3. 选择输出目录
+4. 点击"开始转换"
 
-### 添加主播
+### 历史记录
+- 点击菜单"记录" -> "查看历史记录"
+- 右键点击记录可以打开所在文件夹
 
-通过 POST 请求添加新的主播：
-```sh
-curl -X POST http://localhost:5000/streamers -H "Content-Type: application/json" -d '{
-    "name": "主播名称",
-    "platform": "SOOP",
-    "link": "https://play.sooplive.co.kr/主播ID",
-    "avatar": "头像路径",
-    "check_interval": 5
-}'
-```
-=======
->>>>>>> abfad11d32c5c91b8621bd0e64b5a1b3a5035cbf
+## 注意事项
+
+- 首次使用必须配置 FFmpeg 路径
+- 确保有足够的磁盘空间
+- 建议使用稳定的网络连接
+- 某些杀毒软件可能会误报，这是由于打包技术导致，程序本身是安全的
+
+## 版本历史
+
+### v1.4
+- 新增格式转换功能
+- 支持批量文件处理
+- 优化用户界面
+- 改进文件路径处理
+- 更新程序图标
+
+## 常见问题
+
+### 杀毒软件报警
+如果杀毒软件将程序标记为可疑文件，您可以：
+1. 将程序添加到杀毒软件的白名单中
+2. 程序已经过作者测试，请放心使用
+
+### FFmpeg 配置
+如果遇到 FFmpeg 相关问题：
+1. 确保已正确安装 FFmpeg
+2. 检查 FFmpeg 路径配置
+3. 确保 FFmpeg 可以正常运行
+
+## 联系方式
+
+作者：Lanlic Yuen  
+邮箱：lanlic@hotmail.com
+
+## 许可证
+
+本软件仅供个人研究和学习使用。
