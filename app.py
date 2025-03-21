@@ -1,10 +1,11 @@
+import os
+import sys
+import logging
 import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 import json
-import os
 import time
 import subprocess
-import logging
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -20,9 +21,19 @@ class StreamerApp:
         self.root.geometry("500x350")
         
         # 设置窗口图标
-        icon_path = "icon.ico"
-        if os.path.exists(icon_path):
-            self.root.iconbitmap(icon_path)
+        try:
+            if getattr(sys, 'frozen', False):
+                # 如果是打包后的exe
+                application_path = sys._MEIPASS
+            else:
+                # 如果是直接运行的python脚本
+                application_path = os.path.dirname(os.path.abspath(__file__))
+                
+            icon_path = os.path.join(application_path, 'icon.ico')
+            if os.path.exists(icon_path):
+                self.root.iconbitmap(icon_path)
+        except Exception as e:
+            logging.error(f"Failed to set icon: {str(e)}")
         
         logging.info("Initializing StreamerApp...")
 
