@@ -23,15 +23,23 @@ class StreamerApp:
         # 设置窗口图标
         try:
             if getattr(sys, 'frozen', False):
-                # 如果是打包后的exe
                 application_path = sys._MEIPASS
             else:
-                # 如果是直接运行的python脚本
                 application_path = os.path.dirname(os.path.abspath(__file__))
-                
-            icon_path = os.path.join(application_path, 'icon.ico')
-            if os.path.exists(icon_path):
-                self.root.iconbitmap(icon_path)
+            
+            if os.name == 'nt':  # Windows
+                icon_path = os.path.join(application_path, 'icon.ico')
+                if os.path.exists(icon_path):
+                    self.root.iconbitmap(icon_path)
+            else:  # Linux/Mac
+                try:
+                    import PIL.Image, PIL.ImageTk
+                    icon_path = os.path.join(application_path, 'icon.png')
+                    if os.path.exists(icon_path):
+                        icon = PIL.ImageTk.PhotoImage(PIL.Image.open(icon_path))
+                        self.root.iconphoto(True, icon)
+                except ImportError:
+                    logging.warning("PIL not installed, icon will not be displayed on Linux")
         except Exception as e:
             logging.error(f"Failed to set icon: {str(e)}")
         
@@ -47,7 +55,10 @@ class StreamerApp:
             self.config["past_records"] = []
         # 初始化ffmpeg路径配置
         if "ffmpeg_path" not in self.config:
-            self.config["ffmpeg_path"] = r'D:\FFmpeg\bin\ffmpeg.exe'
+            if os.name == 'nt':  # Windows
+                self.config["ffmpeg_path"] = r'D:\FFmpeg\bin\ffmpeg.exe'
+            else:  # Linux/Mac
+                self.config["ffmpeg_path"] = r'/usr/bin/ffmpeg'
 
         self.save_config()
         self.create_widgets()
@@ -137,9 +148,14 @@ class StreamerApp:
         ffmpeg_entry.grid(row=0, column=1, padx=5)
         
         def browse_ffmpeg():
+            if os.name == 'nt':  # Windows
+                filetypes = [("Executable", "*.exe")]
+            else:  # Linux/Mac
+                filetypes = [("All Files", "*")]
+            
             path = filedialog.askopenfilename(
                 title="选择FFmpeg可执行文件",
-                filetypes=[("Executable", "*.exe")]
+                filetypes=filetypes
             )
             if path:
                 ffmpeg_path_var.set(path)
@@ -180,14 +196,18 @@ class StreamerApp:
         output_path = os.path.join(output_dir, output_name)
 
         # 使用配置中的ffmpeg路径
-        ffmpeg_path = self.config.get("ffmpeg_path", r'D:\FFmpeg\bin\ffmpeg.exe')
+        ffmpeg_path = self.config.get("ffmpeg_path", 
+                                     r'D:\FFmpeg\bin\ffmpeg.exe' if os.name == 'nt' else r'/usr/bin/ffmpeg')
         if suffix == "ts":
             cmd = f'{ffmpeg_path} -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 -i "{link}" -c copy "{output_path}"'
         else:
             cmd = f'{ffmpeg_path} -i "{link}" -c copy -timeout 10000000 -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5 "{output_path}"'
 
-        # 使用 /c 使录制结束后关闭命令行
-        subprocess.Popen(f'start cmd /c {cmd}', shell=True)
+        # 根据操作系统启动进程
+        if os.name == 'nt':  # Windows
+            subprocess.Popen(f'start cmd /c {cmd}', shell=True)
+        else:  # Linux/Mac
+            subprocess.Popen(cmd, shell=True)
 
         # 添加记录
         new_record = {
@@ -321,7 +341,10 @@ class StreamerApp:
                     out_file = os.path.join(output_dir, f"{file_name_without_ext}.mp4")
                     
                     cmd = f'{ffmpeg_path} -i "{in_file}" -c copy "{out_file}"'
-                    subprocess.Popen(f'start cmd /c {cmd}', shell=True)
+                    if os.name == 'nt':  # Windows
+                        subprocess.Popen(f'start cmd /c {cmd}', shell=True)
+                    else:  # Linux/Mac
+                        subprocess.Popen(cmd, shell=True)
             
             messagebox.showinfo("提示", f"开始转换 {len(self.selected_files)} 个文件")
             conv_dialog.destroy()
