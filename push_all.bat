@@ -1,30 +1,38 @@
 @echo off
 chcp 65001 > nul
 
-echo 首先添加新文件到 Git...
-git add README_github.md README_gitee.md push_all.bat
+REM 确保我们有 .gitignore 文件
+echo dist/app.log > .gitignore
+echo dist/config.json >> .gitignore
+echo dist/*.log >> .gitignore
+echo __pycache__/ >> .gitignore
+echo *.pyc >> .gitignore
+
+echo 添加 .gitignore 文件...
+git add .gitignore
+git commit -m "Add .gitignore file"
+
+echo 添加 README 文件到 Git...
+git add README_github.md README_gitee.md push_all.bat -f
 git commit -m "Add README files for different platforms"
 
-echo 正在推送到 GitHub...
+echo 推送到 GitHub...
 copy README_github.md README.md
-git add README.md
+git add README.md -f
 git commit -m "Update README for GitHub"
 git push origin master
 
-echo 正在推送到 Gitee...
+echo 推送到 Gitee...
 copy README_gitee.md README.md
-git add README.md
+git add README.md -f
 git commit -m "Update README for Gitee"
 git push gitee master
 
 echo 恢复 GitHub README...
 copy README_github.md README.md
-git add README.md
+git add README.md -f
 git commit -m "恢复 GitHub README"
 git push origin master
-
-echo 忽略 dist 文件夹中的变化...
-git status
 
 echo 推送完成！
 pause
