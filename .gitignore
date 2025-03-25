@@ -1,0 +1,6 @@
+# 忽略构建输出和日志
+dist/app.log
+dist/config.json
+dist/*.log
+__pycache__/
+*.pyc
