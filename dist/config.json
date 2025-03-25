@@ -1,5 +1,6 @@
 {
   "recent_links": [
+    "https://live-global-cdn-v02.sooplive.co.kr/live-stmc-34/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.DbotPk20g_o9Wp2-mAwYKx0SxQeBOggUoq3TsK3imsinyFsLzCYrfP-tZvAwZKRfKBNlH8i0vqe-Qel9an6CHFCO_AqQKi2yWVfagP7Q13CHqymS2kB58QlUvenNdMXi",
     "https://live-global-cdn-v02.sooplive.co.kr/live-stmc-33/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.MRTNsMlvsgXsyZWj4haud4vu3J9M1cm_f21kyUzHk8UTE10dsbGESbCdTvIwBKGwRRgg8XCHe5ZA05v2UVnhWwSZfYsmdkhPOOUL3ZACBXGldgzQ2aX2oltcIF62Do88",
     "https://live-global-cdn-v02.sooplive.co.kr/live-stm-16/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.taFW2CUGNacM8Jtax7qJlQagMlKMolmfCq8JJ6mM3Y9CqxHi1fKuxO-jhdw2l08EUdcTsw6g5rY73dzhwKZIeN1Z_rS2dXy5hAsFW0JpK33HLy10S66l_LWiQMIV54-m",
     "https://live-global-cdn-v02.sooplive.co.kr/live-stmc-22/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.uMd2eIMAHVozoeViu5yxxy1yQu56f7WRDWMFjx1JucpY9yxqEWI-4RiMfdD5sSBY0767i9cdPOsriTQX1Llxq69Ap80mcyMIvgP9BShgYNlzNtmHVVhC9yTVJz0Z8CLr",
@@ -29,6 +30,18 @@
       "file": "D:/Soop-Live\\2025_03_24_17_15_51_88output.ts",
       "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stmc-33/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.MRTNsMlvsgXsyZWj4haud4vu3J9M1cm_f21kyUzHk8UTE10dsbGESbCdTvIwBKGwRRgg8XCHe5ZA05v2UVnhWwSZfYsmdkhPOOUL3ZACBXGldgzQ2aX2oltcIF62Do88",
       "suffix": "ts"
+    },
+    {
+      "time": "2025_03_24_23_21_14",
+      "file": "D:/Soop-Live\\2025_03_24_23_21_14_88output.mp4",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stmc-34/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.DbotPk20g_o9Wp2-mAwYKx0SxQeBOggUoq3TsK3imsinyFsLzCYrfP-tZvAwZKRfKBNlH8i0vqe-Qel9an6CHFCO_AqQKi2yWVfagP7Q13CHqymS2kB58QlUvenNdMXi",
+      "suffix": "mp4"
+    },
+    {
+      "time": "2025_03_24_23_36_21",
+      "file": "D:/Soop-Live\\2025_03_24_23_36_21_88output.mp4",
+      "link": "https://live-global-cdn-v02.sooplive.co.kr/live-stmc-34/auth_playlist.m3u8?aid=.A32.7bbT56vyHM9fKZk.DbotPk20g_o9Wp2-mAwYKx0SxQeBOggUoq3TsK3imsinyFsLzCYrfP-tZvAwZKRfKBNlH8i0vqe-Qel9an6CHFCO_AqQKi2yWVfagP7Q13CHqymS2kB58QlUvenNdMXi",
+      "suffix": "mp4"
     }
   ],
   "ffmpeg_path": "D:\\FFmpeg\\bin\\ffmpeg.exe",

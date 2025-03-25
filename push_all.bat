@@ -1,6 +1,10 @@
 @echo off
 chcp 65001 > nul
 
+echo 处理 chromedriver.exe 的删除...
+git rm chromedriver.exe
+git commit -m "删除 chromedriver.exe 文件"
+
 REM 确保我们有 .gitignore 文件
 echo dist/app.log > .gitignore
 echo dist/config.json >> .gitignore
@@ -27,6 +31,9 @@ copy README_gitee.md README.md
 git add README.md -f
 git commit -m "Update README for Gitee"
 git push gitee master
+
+echo 拉取并合并 Gitee 的变更...
+git pull gitee master --allow-unrelated-histories
 
 echo 恢复 GitHub README...
 copy README_github.md README.md
